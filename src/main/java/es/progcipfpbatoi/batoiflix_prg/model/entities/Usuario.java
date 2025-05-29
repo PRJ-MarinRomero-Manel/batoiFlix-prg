@@ -7,25 +7,37 @@ public class Usuario {
 	private int id;
     private String nombre;
     private String apellidos;
-    private String password;
-    private String email;
     private String username;
+    private String email;
+    private String password;    
     private String rol;
     private HashSet<Produccion> favoritos;
     private ArrayList<Produccion> historial;
     
-	public Usuario(int id, String nombre, String apellidos, String password, String email, String username, String rol) {		
+	public Usuario(int id, String nombre, String apellidos, String username, String email, String password, String rol,
+			HashSet<Produccion> favoritos, ArrayList<Produccion> historial) {
+		super();
 		this.id = id;
 		this.nombre = nombre;
 		this.apellidos = apellidos;
-		this.password = password;
-		this.email = email;
 		this.username = username;
+		this.email = email;
+		this.password = password;
 		this.rol = rol;
-		this.favoritos = new HashSet<>();
-		this.historial = new ArrayList<>();
+		this.favoritos = favoritos;
+		this.historial = historial;
 	}
-    
-    
+
+	public int getId() {
+		return id;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+	
+	public boolean coincideContrasenya(String contrasenya) {
+        return this.password.equals(contrasenya);
+    }
 
 }

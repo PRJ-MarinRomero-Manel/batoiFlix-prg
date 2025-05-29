@@ -17,4 +17,6 @@ public abstract class Produccion {
 	private String trailer;
 	private String poster;
 	private Set<Plataforma> plataformas;
+	
+	
 }
