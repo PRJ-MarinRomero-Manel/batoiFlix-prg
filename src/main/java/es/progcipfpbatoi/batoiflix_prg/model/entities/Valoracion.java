@@ -12,7 +12,9 @@ public class Valoracion {
 		this.usuario = usuario;
 		this.mensaje = mensaje;
 	}
-	
-	
+
+	public double getNota() {
+		return nota;
+	}
 
 }

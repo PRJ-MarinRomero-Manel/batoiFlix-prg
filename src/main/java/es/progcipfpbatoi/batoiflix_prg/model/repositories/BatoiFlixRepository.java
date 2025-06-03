@@ -188,6 +188,27 @@ public class BatoiFlixRepository {
     	return series;
     }
 
+    public ArrayList<Produccion> getMasRecomendados(){
+    	ArrayList<Produccion> masRecomendados = new ArrayList<>(producciones);
+    	////
+    	return masRecomendados;
+    }
+    
+    public ArrayList<Produccion> getByGenero(String genero) {
+        ArrayList<Produccion> generos = new ArrayList<>();
+        try {
+            Genero generoE = Genero.valueOf(genero.toUpperCase());
+            for (Produccion p : producciones) {
+                if (p.getGeneros().contains(generoE)) {
+                    generos.add(p);
+                }
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Género no válido: " + genero);
+        }
+        return generos;
+    }
+
 }
 
 

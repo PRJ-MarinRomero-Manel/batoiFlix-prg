@@ -45,6 +45,17 @@ public abstract class Produccion {
 
 	public TipoProduccion getTipo() {
 		return tipo;
+		}
+	
+    public double getMedia() {
+    	double suma = 0;
+    	for(Valoracion v : valoraciones) {
+    		suma += v.getNota();
+    	}
+    	return suma;
+    	}
+
+	public Set<Genero> getGeneros() {
+		return generos;
 	}
-    
     }
