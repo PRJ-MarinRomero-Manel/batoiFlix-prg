@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import es.progcipfpbatoi.batoiflix_prg.exceptions.IncorrectPasswordException;
 import es.progcipfpbatoi.batoiflix_prg.exceptions.NotFoundException;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Usuario;
 import es.progcipfpbatoi.batoiflix_prg.model.repositories.BatoiFlixRepository;
@@ -36,22 +37,18 @@ public class BatoiFlixController {
 	                      @RequestParam String password,
 	                      RedirectAttributes redAtt,
 	                      Model model) {
-
 	    try {
-	        Usuario user = repo.getByNombre(name);
-
-	        if (!user.coincideContrasenya(password)) {
-	            redAtt.addFlashAttribute("error", "La contraseña no coincide con el usuario");
-	            return "redirect:/batoiFlix";
-	        }
-
+	        Usuario user = repo.validarLogin(name, password);
 	        model.addAttribute("user", user);
 	        return "user_main_view";
 
 	    } catch (NotFoundException e) {
 	        redAtt.addFlashAttribute("error", "El usuario no existe");
-	        return "redirect:/batoiFlix";
+	    } catch (IncorrectPasswordException e) {
+	        redAtt.addFlashAttribute("error", "La contraseña no coincide con el usuario");
 	    }
+	    return "redirect:/batoiFlix";
 	}
+
 
 }

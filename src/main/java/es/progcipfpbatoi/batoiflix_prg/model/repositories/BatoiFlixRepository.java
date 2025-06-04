@@ -3,11 +3,14 @@ package es.progcipfpbatoi.batoiflix_prg.model.repositories;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Repository;
 
+import es.progcipfpbatoi.batoiflix_prg.exceptions.IncorrectPasswordException;
 import es.progcipfpbatoi.batoiflix_prg.exceptions.NotFoundException;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Calificacion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Genero;
@@ -16,6 +19,7 @@ import es.progcipfpbatoi.batoiflix_prg.model.entities.Plataforma;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Produccion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.TipoProduccion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Usuario;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Valoracion;
 
 @Repository
 public class BatoiFlixRepository {
@@ -147,6 +151,14 @@ public class BatoiFlixRepository {
     		    new ArrayList<>()
     		));}        
 
+    
+    public Usuario validarLogin(String nombre, String contrasenya) {
+        Usuario usuario = getByNombre(nombre);
+        if (!usuario.coincideContrasenya(contrasenya)) {
+            throw new IncorrectPasswordException("La contraseña no coincide");
+        }
+        return usuario;
+    }
 
     public Usuario getById(int id) throws NotFoundException {
         for (Usuario user : usuarios) {
@@ -194,11 +206,11 @@ public class BatoiFlixRepository {
     	return masRecomendados;
     }
     
-    public ArrayList<Produccion> getByGenero(String genero) {
+    public ArrayList<Produccion> getByGenero(String genero, ArrayList<Produccion> listado) {
         ArrayList<Produccion> generos = new ArrayList<>();
         try {
             Genero generoE = Genero.valueOf(genero.toUpperCase());
-            for (Produccion p : producciones) {
+            for (Produccion p : listado) {
                 if (p.getGeneros().contains(generoE)) {
                     generos.add(p);
                 }
@@ -207,6 +219,35 @@ public class BatoiFlixRepository {
             System.out.println("Género no válido: " + genero);
         }
         return generos;
+    }
+    
+    public Produccion getProduccionByNombre(String nombre) throws NotFoundException {
+    	for(Produccion p : producciones) {
+    		if(p.getTitulo().equalsIgnoreCase(nombre)) {
+    			return p;
+    		}
+    	}
+    	throw new NotFoundException("La pelicula/serie de nombre "+nombre+" no existe");
+    }
+    
+    public ArrayList<Produccion> getOrdenarPorFecha(ArrayList<Produccion> listado, boolean descendente) {
+        listado.sort(descendente
+            ? Comparator.comparing(Produccion::getFechaLanzamiento).reversed()
+            : Comparator.comparing(Produccion::getFechaLanzamiento)
+        );
+        return listado;
+    }
+
+    public void hacerValoracion(Produccion p,Valoracion v) {
+    	p.addValoracion(v);
+    }
+    
+    public HashSet<Produccion> getListadoFavoritos(Usuario u){
+    	return u.getFavoritos();
+    }
+    
+    public ArrayList<Produccion> getListadoHistorial(Usuario u){
+    	return u.getHistorial();
     }
 
 }

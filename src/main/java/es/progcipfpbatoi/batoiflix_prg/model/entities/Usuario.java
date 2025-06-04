@@ -40,4 +40,11 @@ public class Usuario {
         return this.password.equals(contrasenya);
     }
 
+	public HashSet<Produccion> getFavoritos() {
+		return favoritos;
+	}
+
+	public ArrayList<Produccion> getHistorial() {
+		return historial;
+	}
 }

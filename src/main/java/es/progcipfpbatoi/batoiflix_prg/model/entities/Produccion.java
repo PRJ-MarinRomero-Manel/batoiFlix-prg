@@ -20,6 +20,7 @@ public abstract class Produccion {
     protected Set<Plataforma> plataformas;
     protected List<Valoracion> valoraciones;
     protected TipoProduccion tipo;
+    protected int visualizaciones = 0;
 
     public Produccion(int id, String titulo, Calificacion calificacion, LocalDate fechaLanzamiento,
                       int duracion, Set<Genero> generos, String director, Set<String> actores,
@@ -57,5 +58,24 @@ public abstract class Produccion {
 
 	public Set<Genero> getGeneros() {
 		return generos;
+	}
+	public String getTitulo() {
+		return titulo;
+	}
+
+	public LocalDate getFechaLanzamiento() {
+		return fechaLanzamiento;
+	}
+
+	public void setTitulo(String titulo) {
+		this.titulo = titulo;
+	}
+	
+	public void addValoracion(Valoracion v) {
+		valoraciones.add(v);
+	}
+	
+	public void incrementarVisualizaciones() {
+	    visualizaciones++;
 	}
     }
