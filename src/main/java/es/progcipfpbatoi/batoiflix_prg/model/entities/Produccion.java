@@ -78,4 +78,8 @@ public abstract class Produccion {
 	public void incrementarVisualizaciones() {
 	    visualizaciones++;
 	}
+
+	public int getId() {
+		return id;
+	}
     }

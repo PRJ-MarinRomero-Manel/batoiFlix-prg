@@ -3,6 +3,7 @@ package es.progcipfpbatoi.batoiflix_prg.model.repositories;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
@@ -201,10 +202,18 @@ public class BatoiFlixRepository {
     }
 
     public ArrayList<Produccion> getMasRecomendados(){
-    	ArrayList<Produccion> masRecomendados = new ArrayList<>(producciones);
-    	////
-    	return masRecomendados;
-    }
+    	    ArrayList<Produccion> copia = new ArrayList<>(producciones);
+
+    	    Collections.sort(copia, new Comparator<Produccion>() {
+    	        public int compare(Produccion p1, Produccion p2) {
+    	            return Double.compare(p2.getMedia(), p1.getMedia());
+    	        }
+    	    });
+
+    	    return copia;
+    	}
+
+    
     
     public ArrayList<Produccion> getByGenero(String genero, ArrayList<Produccion> listado) {
         ArrayList<Produccion> generos = new ArrayList<>();

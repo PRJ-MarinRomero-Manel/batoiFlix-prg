@@ -1,5 +1,6 @@
 package es.progcipfpbatoi.batoiflix_prg.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,8 +16,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.progcipfpbatoi.batoiflix_prg.exceptions.IncorrectPasswordException;
 import es.progcipfpbatoi.batoiflix_prg.exceptions.NotFoundException;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Produccion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Usuario;
 import es.progcipfpbatoi.batoiflix_prg.model.repositories.BatoiFlixRepository;
+import es.progcipfpbatoi.batoiflix_prg.model.repositories.BatoiFlixSQLRepository;
 import es.progcipfpbatoi.batoiflix_prg.utils.Validator;
 
 
@@ -25,7 +28,7 @@ import es.progcipfpbatoi.batoiflix_prg.utils.Validator;
 public class BatoiFlixController {
 	
 	@Autowired
-	private BatoiFlixRepository repo;	
+	private BatoiFlixSQLRepository repo;	
 
 	@GetMapping("/batoiFlix")
 	public String getMenu() {
@@ -50,5 +53,10 @@ public class BatoiFlixController {
 	    return "redirect:/batoiFlix";
 	}
 
+	@GetMapping ("/mejorValoradas")
+	public String getMejorValoraciones(Model model) {
+	    model.addAttribute("recomendadas", repo.getMasRecomendados());
+	    return "mejor_valoradas_view";  
+	}
 
 }
