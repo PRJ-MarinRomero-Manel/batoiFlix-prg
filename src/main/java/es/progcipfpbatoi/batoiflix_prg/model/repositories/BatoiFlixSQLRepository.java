@@ -92,44 +92,65 @@ public class BatoiFlixSQLRepository {
     }
     
     
-    public ArrayList<Pelicula> getPeliculas() {
-        ArrayList<Pelicula> peliculas = new ArrayList<>();
-        String query = "SELECT * FROM Produccion WHERE tipo = 'movie'";
-        
-        try (Connection con = mySQLConnection.getConnection();
-             Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+    
+public ArrayList<Pelicula> getPeliculas() {
+    List<Pelicula> peliculas = new ArrayList<>();
+    String query = "SELECT p.*, " +
+                   "g.cod AS genero_cod, g.descripcion AS genero_desc, " +
+                   "d.dni AS dir_dni, d.nombre AS dir_nombre, d.fecha_nacimiento AS dir_fecha " +
+                   "FROM Produccion p " +
+                   "LEFT JOIN Generos g ON p.id_genero = g.id " +
+                   "LEFT JOIN Director d ON p.dni_director = d.dni " +
+                   "WHERE p.tipo = 'movie'";
 
-            while (rs.next()) {
-                int id = rs.getInt("id");
-                String titulo = rs.getString("titulo");
-                Calificacion calificacion = Calificacion.valueOf(rs.getString("calificacion"));
-                Date fechaSql = rs.getDate("anyo_lanzamiento");
-                LocalDate fechaLanzamiento = fechaSql != null ? fechaSql.toLocalDate() : null;
-                int duracion = rs.getInt("duracion");
-                Set<Genero> generos = new HashSet<>();
-                Set<String> actores = new HashSet<>();
-                Set<Plataforma> plataformas = new HashSet<>();
-                List<Valoracion> valoraciones = new ArrayList<>();
-                //String director = rs.getString("director");
-                HashSet<Director> directores = new HashSet<>();
-                String guion = rs.getString("guion");
-                String productora = rs.getString("productora");
-                String trailer = rs.getString("trailer");
-                String poster = rs.getString("poster");
-                TipoProduccion tipo = TipoProduccion.valueOf(rs.getString("tipo"));
+    try (
+        Connection con = mySQLConnection.getConnection();
+        Statement st = con.createStatement();
+        ResultSet rs = st.executeQuery(query)
+    ) {
+        while (rs.next()) {
+            int id = rs.getInt("id");
+            String titulo = rs.getString("titulo");
+            String sinopsis = rs.getString("sinopsis");
+            int duracion = rs.getInt("duracion");
+            LocalDate fechaLanzamiento = rs.getDate("fecha_lanzamiento").toLocalDate();
+            String tipo = rs.getString("tipo");
 
-                Pelicula p = new Pelicula(id, titulo, calificacion, fechaLanzamiento, duracion,
-                                          generos, directores, actores, guion, productora,
-                                          trailer, poster, plataformas, valoraciones, tipo);
-
-                peliculas.add(p);
+            String plataformasStr = rs.getString("plataforma");
+            Set<Plataforma> plataformas = new HashSet<>();
+            if (plataformasStr != null && !plataformasStr.isBlank()) {
+                for (String nombre : plataformasStr.split(",")) {
+                    plataformas.add(new Plataforma(nombre.trim()));
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
+            
+            Genero genero = null;
+            String cod = rs.getString("genero_cod");
+            if (cod != null) {
+                String desc = rs.getString("genero_desc");
+                genero = new Genero(cod, desc);
+            }
+
+            // Director (puede ser null)
+            HashSet<Director> directores = new HashSet<>();
+            String dni = rs.getString("dir_dni");
+            if (dni != null) {
+                String nombreDir = rs.getString("dir_nombre");
+                Date fechaSQL = rs.getDate("dir_fecha");
+                LocalDate fechaNacimiento = fechaSQL != null ? fechaSQL.toLocalDate() : null;
+                directores.add(new Director(dni, nombreDir, fechaNacimiento));
+            }
+
+            peliculas.add(new Pelicula(id, titulo, sinopsis, duracion, fechaLanzamiento, tipo, genero, directores, plataformas));
         }
-        return peliculas;
+    } catch (SQLException e) {
+        System.err.println("Error al obtener películas: " + e.getMessage());
     }
+
+    return peliculas;
+}
+
+
 
 /**
 
