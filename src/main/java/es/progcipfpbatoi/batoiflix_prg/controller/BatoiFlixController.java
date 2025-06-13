@@ -43,10 +43,9 @@ public class BatoiFlixController {
 	                      Model model) {
 	    try {
 	        Usuario user = repo.validarLogin(name, password);
-	        //ArrayList<Pelicula> peliculas = repo.getPeliculas();
-	        
+	        ArrayList<Pelicula> peliculas = repo.getPeliculas();
 	        model.addAttribute("user", user);	        
-	        //model.addAttribute("peliculas", peliculas);
+	        model.addAttribute("peliculas", peliculas);
 	        return "user_main_view";
 
 	    } catch (NotFoundException e) {
@@ -69,8 +68,11 @@ public class BatoiFlixController {
 	public String getFormPelicula() {
 		return "form_pelicula";
 	}
-
 	
+	@GetMapping("/form-serie")
+	public String getFormSerie() {
+		return "form_pelicula";
+	}
 	
 	
 	@GetMapping ("/mejorValoradas")

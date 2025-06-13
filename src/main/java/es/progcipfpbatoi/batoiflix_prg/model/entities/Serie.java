@@ -10,18 +10,19 @@ public class Serie extends Produccion {
 
     private List<Temporada> temporadas;
     
-    public Serie() {
-    	super();
-    	
-    }
+   
+    public Serie(String titulo, String portada, List<Temporada> temporadas) {
+		super(titulo, portada);
+		this.temporadas = temporadas;
+	}
 
-    public Serie(int id, String titulo, Calificacion calificacion, LocalDate fechaLanzamiento,
-                 int duracion, Set<Genero> generos, HashSet<Director> directores, Set<String> actores,
+	public Serie(int id, String titulo, Calificacion calificacion, LocalDate fechaLanzamiento,
+                 int duracion, Set<Genero> generos, Director director, String actores,
                  String guion, String productora, String trailer, String poster,
-                 Set<Plataforma> plataformas, List<Valoracion> valoraciones,
+                 String plataformas, List<Valoracion> valoraciones,
                  List<Temporada> temporadas, TipoProduccion tipo) {
 
-        super(id, titulo, calificacion, fechaLanzamiento, duracion, generos, directores, actores,
+        super(id, titulo, calificacion, fechaLanzamiento, duracion, generos, director, actores,
               guion, productora, trailer, poster, plataformas, valoraciones, tipo);
 
         this.temporadas = temporadas;

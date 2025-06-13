@@ -12,21 +12,21 @@ public abstract class Produccion {
     protected LocalDate fechaLanzamiento;
     protected int duracion;
     protected Set<Genero> generos;
-    protected HashSet<Director> directores;
-    protected Set<String> actores;
+    protected Director director;
+    protected String actores;
     protected String guion;
     protected String productora;
     protected String trailer;
     protected String poster;
-    protected Set<Plataforma> plataformas;
+    protected String plataformas;
     protected List<Valoracion> valoraciones;
     protected TipoProduccion tipo;
     protected int visualizaciones = 0;
 
     public Produccion(int id, String titulo, Calificacion calificacion, LocalDate fechaLanzamiento,
-                      int duracion, Set<Genero> generos, HashSet<Director> directores, Set<String> actores,
+                      int duracion, Set<Genero> generos, Director director, String actores,
                       String guion, String productora, String trailer, String poster,
-                      Set<Plataforma> plataformas, List<Valoracion> valoraciones,
+                      String plataformas, List<Valoracion> valoraciones,
                       TipoProduccion tipo) {
         this.id = id;
         this.titulo = titulo;
@@ -34,7 +34,7 @@ public abstract class Produccion {
         this.fechaLanzamiento = fechaLanzamiento;
         this.duracion = duracion;
         this.generos = generos;
-        this.directores = directores;
+        this.director = director;
         this.actores = actores;
         this.guion = guion;
         this.productora = productora;
@@ -45,11 +45,15 @@ public abstract class Produccion {
         this.tipo = tipo;
         
     }
-    public Produccion() {
-        	
-        }
-        
-        
+    
+    public Produccion(String titulo, String portada) {
+    	this.titulo = titulo;
+    	this.poster = portada;
+    }
+    
+	public String getPoster() {
+		return poster;
+	}
 
 	public TipoProduccion getTipo() {
 		return tipo;

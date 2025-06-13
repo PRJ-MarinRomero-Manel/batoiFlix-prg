@@ -92,15 +92,12 @@ public class BatoiFlixSQLRepository {
     }
     
     
-    
+ 
 public ArrayList<Pelicula> getPeliculas() {
-    List<Pelicula> peliculas = new ArrayList<>();
-    String query = "SELECT p.*, " +
-                   "g.cod AS genero_cod, g.descripcion AS genero_desc, " +
-                   "d.dni AS dir_dni, d.nombre AS dir_nombre, d.fecha_nacimiento AS dir_fecha " +
+    ArrayList<Pelicula> peliculas = new ArrayList<>();
+
+    String query = "SELECT p.titulo, p.portada " +
                    "FROM Produccion p " +
-                   "LEFT JOIN Generos g ON p.id_genero = g.id " +
-                   "LEFT JOIN Director d ON p.dni_director = d.dni " +
                    "WHERE p.tipo = 'movie'";
 
     try (
@@ -109,39 +106,12 @@ public ArrayList<Pelicula> getPeliculas() {
         ResultSet rs = st.executeQuery(query)
     ) {
         while (rs.next()) {
-            int id = rs.getInt("id");
             String titulo = rs.getString("titulo");
-            String sinopsis = rs.getString("sinopsis");
-            int duracion = rs.getInt("duracion");
-            LocalDate fechaLanzamiento = rs.getDate("fecha_lanzamiento").toLocalDate();
-            String tipo = rs.getString("tipo");
+            String poster = rs.getString("portada");
 
-            String plataformasStr = rs.getString("plataforma");
-            Set<Plataforma> plataformas = new HashSet<>();
-            if (plataformasStr != null && !plataformasStr.isBlank()) {
-                for (String nombre : plataformasStr.split(",")) {
-                    plataformas.add(new Plataforma(nombre.trim()));
-                }
-            }
-            
-            Genero genero = null;
-            String cod = rs.getString("genero_cod");
-            if (cod != null) {
-                String desc = rs.getString("genero_desc");
-                genero = new Genero(cod, desc);
-            }
+            Pelicula pelicula = new Pelicula(titulo, poster);
 
-            // Director (puede ser null)
-            HashSet<Director> directores = new HashSet<>();
-            String dni = rs.getString("dir_dni");
-            if (dni != null) {
-                String nombreDir = rs.getString("dir_nombre");
-                Date fechaSQL = rs.getDate("dir_fecha");
-                LocalDate fechaNacimiento = fechaSQL != null ? fechaSQL.toLocalDate() : null;
-                directores.add(new Director(dni, nombreDir, fechaNacimiento));
-            }
-
-            peliculas.add(new Pelicula(id, titulo, sinopsis, duracion, fechaLanzamiento, tipo, genero, directores, plataformas));
+            peliculas.add(pelicula);
         }
     } catch (SQLException e) {
         System.err.println("Error al obtener películas: " + e.getMessage());
@@ -151,8 +121,9 @@ public ArrayList<Pelicula> getPeliculas() {
 }
 
 
-
 /**
+
+
 
     // Historia de usuario 1 y 2: Obtiene las series (tipo 'tv_show')
     public ArrayList<Produccion> getSeries(){

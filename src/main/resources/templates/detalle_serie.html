@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalles de Serie</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <h1>Detalles de la Serie</h1>
+
+    <p><strong>Título:</strong> <span th:text="${serie.titulo}"></span></p>
+    <p><strong>Fecha de Estreno:</strong> <span th:text="${serie.fechaEstreno}"></span></p>
+    <p><strong>Guión:</strong> <span th:text="${serie.guion}"></span></p>
+    <p><strong>Productora:</strong> <span th:text="${serie.productora}"></span></p>
+    <p><strong>Número de Capítulos:</strong> <span th:text="${serie.capitulos}"></span></p>
+    <p><strong>Plataformas:</strong> <span th:text="${serie.plataforma}"></span></p>
+
+    <a href="/series">← Volver al listado de series</a>
+
+</body>
+</html>

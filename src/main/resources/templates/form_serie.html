@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Formulario Serie</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <h1>Añadir nueva Serie</h1>
+
+    <form action="#" th:action="@{/series}" method="post">
+        <label for="titulo">Título:</label>
+        <input type="text" id="titulo" name="titulo" required><br/><br/>
+
+        <label for="fechaEstreno">Fecha de estreno:</label>
+        <input type="date" id="fechaEstreno" name="fechaEstreno" required><br/><br/>
+
+        <label for="guion">Guión:</label>
+        <input type="text" id="guion" name="guion"><br/><br/>
+
+        <label for="productora">Productora:</label>
+        <input type="text" id="productora" name="productora"><br/><br/>
+
+        <label for="capitulos">Número de capítulos:</label>
+        <input type="number" id="capitulos" name="capitulos" min="1" required><br/><br/>
+
+        <label for="plataforma">Plataformas (separadas por comas):</label>
+        <input type="text" id="plataforma" name="plataforma"><br/><br/>
+
+        <button type="submit">Guardar serie</button>
+    </form>
+
+    <br/>
+    <a href="/series">← Volver al listado de series</a>
+
+</body>
+</html>
