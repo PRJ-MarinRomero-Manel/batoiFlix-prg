@@ -1,6 +1,7 @@
 package es.progcipfpbatoi.batoiflix_prg.model.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -11,7 +12,7 @@ public abstract class Produccion {
     protected LocalDate fechaLanzamiento;
     protected int duracion;
     protected Set<Genero> generos;
-    protected String director;
+    protected HashSet<Director> directores;
     protected Set<String> actores;
     protected String guion;
     protected String productora;
@@ -23,7 +24,7 @@ public abstract class Produccion {
     protected int visualizaciones = 0;
 
     public Produccion(int id, String titulo, Calificacion calificacion, LocalDate fechaLanzamiento,
-                      int duracion, Set<Genero> generos, String director, Set<String> actores,
+                      int duracion, Set<Genero> generos, HashSet<Director> directores, Set<String> actores,
                       String guion, String productora, String trailer, String poster,
                       Set<Plataforma> plataformas, List<Valoracion> valoraciones,
                       TipoProduccion tipo) {
@@ -33,7 +34,7 @@ public abstract class Produccion {
         this.fechaLanzamiento = fechaLanzamiento;
         this.duracion = duracion;
         this.generos = generos;
-        this.director = director;
+        this.directores = directores;
         this.actores = actores;
         this.guion = guion;
         this.productora = productora;
@@ -42,7 +43,13 @@ public abstract class Produccion {
         this.plataformas = plataformas;
         this.valoraciones = valoraciones;
         this.tipo = tipo;
+        
+    }
+    public Produccion() {
+        	
         }
+        
+        
 
 	public TipoProduccion getTipo() {
 		return tipo;

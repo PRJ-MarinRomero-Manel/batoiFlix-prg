@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import es.progcipfpbatoi.batoiflix_prg.exceptions.IncorrectPasswordException;
 import es.progcipfpbatoi.batoiflix_prg.exceptions.NotFoundException;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Pelicula;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Produccion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Usuario;
 import es.progcipfpbatoi.batoiflix_prg.model.repositories.BatoiFlixRepository;
@@ -42,7 +43,10 @@ public class BatoiFlixController {
 	                      Model model) {
 	    try {
 	        Usuario user = repo.validarLogin(name, password);
-	        model.addAttribute("user", user);
+	        //ArrayList<Pelicula> peliculas = repo.getPeliculas();
+	        
+	        model.addAttribute("user", user);	        
+	        //model.addAttribute("peliculas", peliculas);
 	        return "user_main_view";
 
 	    } catch (NotFoundException e) {
@@ -52,10 +56,26 @@ public class BatoiFlixController {
 	    }
 	    return "redirect:/batoiFlix";
 	}
+	@GetMapping("/peliculas")
+	public String getPeliculas() {
+		return "peliculas";
+	}
+	@GetMapping("/series")
+	public String getSeries() {
+		return "";
+	}
+	
+	@GetMapping("/form-pelicula")
+	public String getFormPelicula() {
+		return "form_pelicula";
+	}
 
+	
+	
+	
 	@GetMapping ("/mejorValoradas")
 	public String getMejorValoraciones(Model model) {
-	    model.addAttribute("recomendadas", repo.getMasRecomendados());
+	    //model.addAttribute("recomendadas", repo.getMasRecomendados());
 	    return "mejor_valoradas_view";  
 	}
 

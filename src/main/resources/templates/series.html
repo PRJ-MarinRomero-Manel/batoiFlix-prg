@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Series - BatoiFlix</title>
+  <link rel="stylesheet" th:href="@{/style.css}">
+</head>
+<body>
+  <header>
+    <h1>Series</h1>
+    <div style="text-align: right;">
+      <a th:href="@{/series/nueva}">
+        <button>Añadir serie</button>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <ul>
+      <li th:each="serie : ${series}">
+        <h3 th:text="${serie.title}">Título</h3>
+        <p th:text="${serie.description}">Descripción</p>
+      </li>
+    </ul>
+  </main>
+
+  <footer>
+    <p>BatoiFlix © 2025</p>
+  </footer>
+</body>
+</html>

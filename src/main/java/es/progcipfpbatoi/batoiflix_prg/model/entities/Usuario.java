@@ -14,8 +14,8 @@ public class Usuario {
     private HashSet<Produccion> favoritos;
     private ArrayList<Produccion> historial;
     
-	public Usuario(int id, String nombre, String apellidos, String username, String email, String password, String rol,
-			HashSet<Produccion> favoritos, ArrayList<Produccion> historial) {
+	public Usuario(int id, String nombre, String apellidos, String username,
+			String email, String password, String rol) {
 		super();
 		this.id = id;
 		this.nombre = nombre;
@@ -24,8 +24,8 @@ public class Usuario {
 		this.email = email;
 		this.password = password;
 		this.rol = rol;
-		this.favoritos = favoritos;
-		this.historial = historial;
+		this.favoritos = new HashSet<>();
+		this.historial = new ArrayList<>();
 	}
 
 	public int getId() {

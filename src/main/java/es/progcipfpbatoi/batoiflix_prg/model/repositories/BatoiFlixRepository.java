@@ -31,8 +31,8 @@ public class BatoiFlixRepository {
     public BatoiFlixRepository() {
         this.usuarios = new ArrayList<>();
         this.producciones = new ArrayList<>();
-        this.usuarios.add(new Usuario(1, "admin", "admin", "admin", "admin@gmail.com", "1234", "admin", null, null));    	
-
+        //this.usuarios.add(new Usuario(1, "admin", "admin", "admin", "admin@gmail.com", "1234", "admin", null, null));    	
+/**
         producciones.add(new Pelicula(
         	    1,
         	    "Argo",
@@ -150,7 +150,9 @@ public class BatoiFlixRepository {
     		    "https://images-na.ssl-images-amazon.com/images/M/MV5BMTYyOTM5NzU3Nl5BMl5BanBnXkFtZTgwOTQxNjAxNzE@._V1_SX300.jpg",
     		    Set.of(Plataforma.NETFLIX),
     		    new ArrayList<>()
-    		));}        
+    		));
+    		*/
+    		}        
 
     
     public Usuario validarLogin(String nombre, String contrasenya) {

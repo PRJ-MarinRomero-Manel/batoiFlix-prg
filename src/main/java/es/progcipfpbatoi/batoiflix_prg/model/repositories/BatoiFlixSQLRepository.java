@@ -1,6 +1,7 @@
 package es.progcipfpbatoi.batoiflix_prg.model.repositories;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -8,6 +9,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,6 +18,11 @@ import org.springframework.stereotype.Repository;
 import es.progcipfpbatoi.batoiflix_prg.config.MySQLConnection;
 import es.progcipfpbatoi.batoiflix_prg.exceptions.IncorrectPasswordException;
 import es.progcipfpbatoi.batoiflix_prg.exceptions.NotFoundException;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Calificacion;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Director;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Genero;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Pelicula;
+import es.progcipfpbatoi.batoiflix_prg.model.entities.Plataforma;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Produccion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.TipoProduccion;
 import es.progcipfpbatoi.batoiflix_prg.model.entities.Usuario;
@@ -26,7 +34,7 @@ public class BatoiFlixSQLRepository {
     @Autowired
     private MySQLConnection mySQLConnection;
     
-    // Historia de usuario 7: Valida el login del usuario
+
     public Usuario validarLogin(String nombre, String contrasenya) {
         Usuario usuario = getByNombre(nombre);
         if (!usuario.coincideContrasenya(contrasenya)) {
@@ -35,9 +43,9 @@ public class BatoiFlixSQLRepository {
         return usuario;
     }
 
-    // Obtiene un usuario por su ID (Historia 7)
+
     public Usuario getById(int id) throws NotFoundException {
-        String query = "SELECT * FROM usuario WHERE id = ?";
+        String query = "SELECT * FROM Usuario WHERE id = ?";
         try (Connection con = mySQLConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, id);
@@ -53,9 +61,9 @@ public class BatoiFlixSQLRepository {
         }
     }
 
-    // Obtiene un usuario por su nombre (Historia 7)
+
     public Usuario getByNombre(String n) throws NotFoundException {
-        String query = "SELECT * FROM usuario WHERE nombre = ?";
+        String query = "SELECT * FROM Usuario WHERE nombre = ?";
         try (Connection con = mySQLConnection.getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, n);
@@ -71,21 +79,59 @@ public class BatoiFlixSQLRepository {
         }
     }
     
-    // Historia de usuario 1 y 2: Obtiene las películas (tipo 'movie')
-    public ArrayList<Produccion> getPeliculas(){
-        ArrayList<Produccion> peliculas = new ArrayList<>();
-        String query = "SELECT * FROM produccion WHERE tipo = 'movie'";
+    private Usuario mapearUsuario(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String nombre = rs.getString("nombre");
+        String apellidos = rs.getString("apellidos");
+        String username = rs.getString("username");
+        String email = rs.getString("email");
+        String password = rs.getString("password");
+        String rol = rs.getString("rol");
+
+        return new Usuario(id, nombre, apellidos, username, email, password, rol);
+    }
+    
+    
+    public ArrayList<Pelicula> getPeliculas() {
+        ArrayList<Pelicula> peliculas = new ArrayList<>();
+        String query = "SELECT * FROM Produccion WHERE tipo = 'movie'";
+        
         try (Connection con = mySQLConnection.getConnection();
              Statement stmt = con.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
-            while (rs.next()){
-                peliculas.add(mapearProduccion(rs));
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String titulo = rs.getString("titulo");
+                Calificacion calificacion = Calificacion.valueOf(rs.getString("calificacion"));
+                Date fechaSql = rs.getDate("anyo_lanzamiento");
+                LocalDate fechaLanzamiento = fechaSql != null ? fechaSql.toLocalDate() : null;
+                int duracion = rs.getInt("duracion");
+                Set<Genero> generos = new HashSet<>();
+                Set<String> actores = new HashSet<>();
+                Set<Plataforma> plataformas = new HashSet<>();
+                List<Valoracion> valoraciones = new ArrayList<>();
+                //String director = rs.getString("director");
+                HashSet<Director> directores = new HashSet<>();
+                String guion = rs.getString("guion");
+                String productora = rs.getString("productora");
+                String trailer = rs.getString("trailer");
+                String poster = rs.getString("poster");
+                TipoProduccion tipo = TipoProduccion.valueOf(rs.getString("tipo"));
+
+                Pelicula p = new Pelicula(id, titulo, calificacion, fechaLanzamiento, duracion,
+                                          generos, directores, actores, guion, productora,
+                                          trailer, poster, plataformas, valoraciones, tipo);
+
+                peliculas.add(p);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return peliculas;
     }
+
+/**
 
     // Historia de usuario 1 y 2: Obtiene las series (tipo 'tv_show')
     public ArrayList<Produccion> getSeries(){
@@ -288,10 +334,7 @@ public class BatoiFlixSQLRepository {
         }
         return lista;
     }
-    /**
-     * 
-     * @param p
-     */
+     
     // Historia de usuario 10: Actualiza la información de una producción existente
     public void actualizarProduccion(Produccion p) {
         String query = "UPDATE produccion SET titulo = ?, media = ?, fecha_lanzamiento = ?, " +
@@ -314,36 +357,40 @@ public class BatoiFlixSQLRepository {
         } catch (SQLException e){
             e.printStackTrace();
         }
-    }
+    }    
+
     
-    // --- Métodos privados para mapear el ResultSet a entidades ---
-    private Usuario mapearUsuario(ResultSet rs) throws SQLException {
-        Usuario usuario = new Usuario();
-        usuario.setId(rs.getInt("id"));
-        usuario.setNombre(rs.getString("nombre"));
-        usuario.setPassword(rs.getString("password"));
-        // Mapea otros campos necesarios, por ejemplo:
-        // usuario.setEmail(rs.getString("email"));
-        return usuario;
-    }
-    
-    private Produccion mapearProduccion(ResultSet rs) throws SQLException {
-        Produccion produccion = new Produccion();
-        produccion.setId(rs.getInt("id"));
-        produccion.setTitulo(rs.getString("titulo"));
-        
-        String tipoStr = rs.getString("tipo");
-        if (tipoStr != null) {
-            produccion.setTipo(TipoProduccion.valueOf(tipoStr.toLowerCase()));
+    public Produccion mapearProduccion(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String titulo = rs.getString("titulo");
+        String calificacion = rs.getString("calificacion");
+        LocalDate fechaLanzamiento = rs.getDate("fechaLanzamiento").toLocalDate();
+        int duracion = rs.getInt("duracion");       
+        Set<Genero> generos = obtenerGenerosDesdeResultSet(rs);
+        String director = rs.getString("director");
+        Set<String> actores = obtenerActoresDesdeResultSet(rs);
+        String guion = rs.getString("guion");
+        String productora = rs.getString("productora");
+        String trailer = rs.getString("trailer");
+        String poster = rs.getString("poster");
+        Set<Plataforma> plataformas = obtenerPlataformasDesdeResultSet(rs);
+        List<Valoracion> valoraciones = obtenerValoracionesDesdeResultSet(rs);
+        TipoProduccion tipo = TipoProduccion.valueOf(rs.getString("tipo"));
+
+        Produccion produccion;
+        if (tipo == TipoProduccion.PELICULA) {
+            produccion = new Pelicula(id, titulo, calificacion, fechaLanzamiento, duracion, generos,
+                                      director, actores, guion, productora, trailer, poster, plataformas,
+                                      valoraciones, tipo);
+        } else if (tipo == TipoProduccion.SERIE) {
+            produccion = new Serie(id, titulo, calificacion, fechaLanzamiento, duracion, generos,
+                                  director, actores, guion, productora, trailer, poster, plataformas,
+                                  valoraciones, tipo);
+        } else {
+            throw new SQLException("Tipo de producción desconocido: " + tipo);
         }
         
-        java.sql.Date sqlDate = rs.getDate("fecha_lanzamiento");
-        if (sqlDate != null) {
-            produccion.setFechaLanzamiento(sqlDate.toLocalDate());
-        }
-        
-        produccion.setMedia(rs.getDouble("media"));
-        // Mapear otros campos según la definición de la tabla (duracion, generos, guion, url_trailer, poster, plataforma, visualizaciones, etc.)
         return produccion;
     }
+    */
 }

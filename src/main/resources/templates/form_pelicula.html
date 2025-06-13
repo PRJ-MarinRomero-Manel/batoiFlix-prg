@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Nueva Película</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header>
+    <div class="logo-text">
+        <h1>BatoiFlix</h1>
+    </div>
+</header>
+
+<main>
+    <h2>Añadir nueva película</h2>
+
+    <form action="/peliculas" method="post">
+        <label>Título:
+            <input type="text" name="titulo" required />
+        </label>
+
+        <label>Calificación:
+            <select name="calificacion" required>
+                <option value="G">G</option>
+                <option value="PG">PG</option>
+                <option value="PG_13">PG-13</option>
+                <option value="R">R</option>
+                <option value="X">X</option>
+            </select>
+        </label>
+
+        <label>Fecha de lanzamiento:
+            <input type="date" name="fechaLanzamiento" required />
+        </label>
+
+        <label>Duración (minutos):
+            <input type="number" name="duracion" min="1" required />
+        </label>
+
+        <fieldset>
+            <legend>Géneros:</legend>
+            <label><input type="checkbox" name="generos" value="ACTION"> Action</label><br>
+            <label><input type="checkbox" name="generos" value="FANTASY"> Fantasy</label><br>
+            <label><input type="checkbox" name="generos" value="MUSICAL"> Musical</label><br>
+            <label><input type="checkbox" name="generos" value="HISTORY"> History</label><br>
+            <label><input type="checkbox" name="generos" value="SPORTS"> Sports</label><br>
+            <label><input type="checkbox" name="generos" value="BIOGRAPHY"> Biography</label><br>
+            <label><input type="checkbox" name="generos" value="COMEDY"> Comedy</label><br>
+            <label><input type="checkbox" name="generos" value="SCI_FI"> Sci-Fi</label><br>
+            <label><input type="checkbox" name="generos" value="MYSTERY"> Mystery</label><br>
+            <label><input type="checkbox" name="generos" value="WESTERN"> Western</label><br>
+            <label><input type="checkbox" name="generos" value="HORROR"> Horror</label><br>
+            <label><input type="checkbox" name="generos" value="FAMILY"> Family</label><br>
+            <label><input type="checkbox" name="generos" value="ROMANCE"> Romance</label><br>
+            <label><input type="checkbox" name="generos" value="THRILLER"> Thriller</label><br>
+            <label><input type="checkbox" name="generos" value="ADVENTURE"> Adventure</label><br>
+            <label><input type="checkbox" name="generos" value="CRIME"> Crime</label><br>
+            <label><input type="checkbox" name="generos" value="DRAMA"> Drama</label><br>
+            <label><input type="checkbox" name="generos" value="ANIMATION"> Animation</label><br>
+        </fieldset>
+
+        <label>Directores:
+            <input type="text" name="directores" placeholder="Nombre 1, Nombre 2" />
+        </label>
+
+        <label>Actores:
+            <input type="text" name="actores" placeholder="Actor 1, Actor 2" />
+        </label>
+
+        <label>Guion:
+            <input type="text" name="guion" />
+        </label>
+
+        <label>Productora:
+            <input type="text" name="productora" />
+        </label>
+
+        <label>Trailer (URL):
+            <input type="url" name="trailer" />
+        </label>
+
+        <label>Poster (URL):
+            <input type="url" name="poster" />
+        </label>
+
+        <fieldset>
+            <legend>Plataformas:</legend>
+            <label><input type="checkbox" name="plataformas" value="HBO"> HBO</label><br>
+            <label><input type="checkbox" name="plataformas" value="RAKUTEN"> RAKUTEN TV</label><br>
+            <label><input type="checkbox" name="plataformas" value="APPLE"> APPLE TV+</label><br>
+            <label><input type="checkbox" name="plataformas" value="AMAZON"> AMAZON PRIME VIDEO</label><br>
+            <label><input type="checkbox" name="plataformas" value="NETFLIX"> NETFLIX</label><br>
+            <label><input type="checkbox" name="plataformas" value="DISNEY"> DISNEY +</label><br>
+            <label><input type="checkbox" name="plataformas" value="POPCORNFLIX"> POPCORNFLIX</label><br>
+        </fieldset>
+
+        <button type="submit">Añadir</button>
+    </form>
+</main>
+
+<footer>
+    <p>BatoiFlix © 2025</p>
+</footer>
+
+</body>
+</html>

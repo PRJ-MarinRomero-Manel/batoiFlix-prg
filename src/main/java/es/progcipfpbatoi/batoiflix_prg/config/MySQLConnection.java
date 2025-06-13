@@ -15,7 +15,7 @@ public class MySQLConnection {
     private String password;
 
     public MySQLConnection() {
-        this.ip = "127.0.0.1";
+        this.ip = "localhost:3306";
         this.database = "batoiFlix";
         this.userName = "manelsql";
         this.password = "akirakurosawa";

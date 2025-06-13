@@ -116,3 +116,16 @@ form button:hover {
     background-color: #0056b3;
 }
 
+.formulario {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.error-msj {
+    color: red;
+    margin-bottom: 10px;
+    text-align: center;
+    font-weight: bold;
+}
+
+
